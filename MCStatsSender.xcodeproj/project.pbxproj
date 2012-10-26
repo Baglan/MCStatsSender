@@ -18,6 +18,9 @@
 		8692F09316394857002B968F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8692F09216394857002B968F /* Default-568h@2x.png */; };
 		8692F09616394857002B968F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8692F09516394857002B968F /* ViewController.m */; };
 		8692F09916394857002B968F /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8692F09716394857002B968F /* ViewController.xib */; };
+		8692F0A21639487D002B968F /* MCStatsSender.m in Sources */ = {isa = PBXBuildFile; fileRef = 8692F0A11639487D002B968F /* MCStatsSender.m */; };
+		8692F0AC16399342002B968F /* stats.php in Resources */ = {isa = PBXBuildFile; fileRef = 8692F0AB16399342002B968F /* stats.php */; };
+		8692F0AE16399371002B968F /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8692F0AD16399371002B968F /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +40,10 @@
 		8692F09416394857002B968F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		8692F09516394857002B968F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		8692F09816394857002B968F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		8692F0A01639487D002B968F /* MCStatsSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MCStatsSender.h; path = Classes/MCStatsSender.h; sourceTree = "<group>"; };
+		8692F0A11639487D002B968F /* MCStatsSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MCStatsSender.m; path = Classes/MCStatsSender.m; sourceTree = "<group>"; };
+		8692F0AB16399342002B968F /* stats.php */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.php; name = stats.php; path = PHP/stats.php; sourceTree = "<group>"; };
+		8692F0AD16399371002B968F /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +63,9 @@
 		8692F06D16394856002B968F = {
 			isa = PBXGroup;
 			children = (
+				8692F0AD16399371002B968F /* README.md */,
+				86B701AA163A58AF00D5269B /* PHP */,
+				8692F09F16394860002B968F /* Classes */,
 				8692F08216394857002B968F /* MCStatsSender */,
 				8692F07B16394857002B968F /* Frameworks */,
 				8692F07916394857002B968F /* Products */,
@@ -105,6 +115,23 @@
 				8692F09216394857002B968F /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8692F09F16394860002B968F /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				8692F0A01639487D002B968F /* MCStatsSender.h */,
+				8692F0A11639487D002B968F /* MCStatsSender.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		86B701AA163A58AF00D5269B /* PHP */ = {
+			isa = PBXGroup;
+			children = (
+				8692F0AB16399342002B968F /* stats.php */,
+			);
+			name = PHP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +190,8 @@
 				8692F09116394857002B968F /* Default@2x.png in Resources */,
 				8692F09316394857002B968F /* Default-568h@2x.png in Resources */,
 				8692F09916394857002B968F /* ViewController.xib in Resources */,
+				8692F0AC16399342002B968F /* stats.php in Resources */,
+				8692F0AE16399371002B968F /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +205,7 @@
 				8692F08916394857002B968F /* main.m in Sources */,
 				8692F08D16394857002B968F /* AppDelegate.m in Sources */,
 				8692F09616394857002B968F /* ViewController.m in Sources */,
+				8692F0A21639487D002B968F /* MCStatsSender.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +321,7 @@
 				8692F09E16394857002B968F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
