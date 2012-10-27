@@ -5,8 +5,9 @@
     
     $data = json_decode($post, true);
     $data['time']	= date('Y-m-d H:i:s');
-    $data['bundle'] = $_SERVER['HTTP_X_MCSTATSSENDER_NAME'];
-    $data['version'] = $_SERVER['HTTP_X_MCSTATSSENDER_VERSION'];
+    $data['product'] = $_SERVER['HTTP_X_MCSTATSSENDER_PRODUCT'];
+    $data['system'] = $_SERVER['HTTP_X_MCSTATSSENDER_SYSTEM'];
+    $data['device'] = $_SERVER['HTTP_X_MCSTATSSENDER_DEVICE'];
     $data['uniqueId'] = $_SERVER['HTTP_X_MCSTATSSENDER_UNIQUEID'];
     
     $fd = fopen('log.txt', 'ab');

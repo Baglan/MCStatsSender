@@ -10,6 +10,7 @@
 
 #define MCSTATSSENDER_UNIQUE_ID_KEY         @"MCStatsSender_uniqueId"
 #define MCSTATSSENDER_UNIQUE_ID_HEADER_KEY  @"X-MCSTATSSENDER_UNIQUEID"
+#define MCSTATSSENDER_DEVICE_KEY            @"X-MCSTATSSENDER_DEVICE"
 #define MCSTATSSENDER_SYSTEM_KEY            @"X-MCSTATSSENDER_SYSTEM"
 #define MCSTATSSENDER_PRODUCT_KEY           @"X-MCSTATSSENDER_PRODUCT"
 
@@ -18,6 +19,7 @@
     __strong NSURL *_serviceURL;
     NSString * _product;
     NSString * _system;
+    NSString * _device;
 }
 
 @property (nonatomic, retain) NSURL * serviceURL;
@@ -62,6 +64,9 @@
         NSString * systemName = [[UIDevice currentDevice] systemName];
         NSString * systemVersion = [[UIDevice currentDevice] systemVersion];
         _system = [NSString stringWithFormat:@"%@ %@", systemName, systemVersion];
+        
+        // Device
+        _device = [UIDevice currentDevice].model;
     }
     return self;
 }
@@ -77,6 +82,7 @@
     [request setValue:_uniqieID forHTTPHeaderField:MCSTATSSENDER_UNIQUE_ID_HEADER_KEY];
     [request setValue:_product forHTTPHeaderField:MCSTATSSENDER_PRODUCT_KEY];
     [request setValue:_system forHTTPHeaderField:MCSTATSSENDER_SYSTEM_KEY];
+    [request setValue:_device forHTTPHeaderField:MCSTATSSENDER_DEVICE_KEY];
     
     NSData * actionData = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
     [request setHTTPBody:actionData];
@@ -110,7 +116,5 @@
 {
     [self sendData:@{@"action": action}];
 }
-
-
 
 @end
