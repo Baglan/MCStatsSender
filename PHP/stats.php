@@ -8,6 +8,7 @@
     $data['product'] = $_SERVER['HTTP_X_MCSTATSSENDER_PRODUCT'];
     $data['system'] = $_SERVER['HTTP_X_MCSTATSSENDER_SYSTEM'];
     $data['device'] = $_SERVER['HTTP_X_MCSTATSSENDER_DEVICE'];
+    $data['screenSize'] = $_SERVER['HTTP_X_MCSTATSSENDER_SCREEN_SIZE'];
     $data['uniqueId'] = $_SERVER['HTTP_X_MCSTATSSENDER_UNIQUEID'];
     
     $fd = fopen('log.txt', 'ab');
