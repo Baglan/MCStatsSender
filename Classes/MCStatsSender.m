@@ -72,7 +72,7 @@
         
         // Screen size
         CGSize screenSize = [UIScreen mainScreen].bounds.size;
-        _screenSize = [NSString stringWithFormat:@"%.0f x %.0f", screenSize.width, screenSize.height];
+        _screenSize = [NSString stringWithFormat:@"%.0f x %.0f x %.0f", screenSize.width, screenSize.height, [UIScreen mainScreen].scale];
     }
     return self;
 }
