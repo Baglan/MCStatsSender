@@ -42,6 +42,20 @@
     return _sharedObject;
 }
 
+/**
+ * Code taken from http://oleb.net/blog/2011/09/how-to-replace-the-udid/
+ */
+- (NSString *)createUDID
+{
+    NSString * udidString = nil;
+    CFUUIDRef uuid = CFUUIDCreate(NULL);
+    if (uuid) {
+        udidString = (NSString *)CFBridgingRelease(CFUUIDCreateString(NULL, uuid));
+        CFRelease(uuid);
+    }
+    return udidString;
+}
+
 - (id)init
 {
     self = [super init];
@@ -51,7 +65,7 @@
         NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
         _uniqieID = [userDefaults objectForKey:MCSTATSSENDER_UNIQUE_ID_KEY];
         if (!_uniqieID) {
-            _uniqieID = [[NSProcessInfo processInfo] globallyUniqueString];
+            _uniqieID = [self createUDID];
             [userDefaults setObject:_uniqieID forKey:MCSTATSSENDER_UNIQUE_ID_KEY];
             [userDefaults synchronize];
         }
