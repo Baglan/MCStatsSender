@@ -6,14 +6,42 @@
 //  Copyright (c) 2012 MobileCreators. All rights reserved.
 //
 
-#import "MCStatsSender.h"
-
 #define MCSTATSSENDER_UNIQUE_ID_KEY         @"MCStatsSender_uniqueId"
 #define MCSTATSSENDER_UNIQUE_ID_HEADER_KEY  @"X-MCSTATSSENDER_UNIQUEID"
 #define MCSTATSSENDER_DEVICE_KEY            @"X-MCSTATSSENDER_DEVICE"
 #define MCSTATSSENDER_SYSTEM_KEY            @"X-MCSTATSSENDER_SYSTEM"
 #define MCSTATSSENDER_PRODUCT_KEY           @"X-MCSTATSSENDER_PRODUCT"
 #define MCSTATSSENDER_SCREEN_SIZE_KEY       @"X-MCSTATSSENDER_SCREEN_SIZE"
+#define MCSTATSSENDER_MACHINE_NAME_KEY      @"X-MCSTATSSENDER_MACHINE_NAME"
+#define MCSTATSSENDER_REACHABILITY_KEY      @"X-MCSTATSSENDER_REACHABILITY"
+#define MCSTATSSENDER_COMPROMIZED_KEY       @"X-MCSTATSSENDER_COMPROMIZED"
+
+#import "MCStatsSender.h"
+#import <sys/utsname.h>
+#import "Reachability.h"
+
+// BEGIN: Piracy check definitions
+
+#import <dlfcn.h>
+#import <mach-o/dyld.h>
+#import <TargetConditionals.h>
+
+/* The encryption info struct and constants are missing from the iPhoneSimulator SDK, but not from the iPhoneOS or
+ * Mac OS X SDKs. Since one doesn't ever ship a Simulator binary, we'll just provide the definitions here. */
+#if TARGET_IPHONE_SIMULATOR && !defined(LC_ENCRYPTION_INFO)
+#define LC_ENCRYPTION_INFO 0x21
+struct encryption_info_command {
+    uint32_t cmd;
+    uint32_t cmdsize;
+    uint32_t cryptoff;
+    uint32_t cryptsize;
+    uint32_t cryptid;
+};
+#endif
+
+int main (int argc, char *argv[]);
+
+// END: Piracy check definitions
 
 @interface MCStatsSender () {
     NSString * _uniqieID;
@@ -22,6 +50,8 @@
     NSString * _system;
     NSString * _device;
     NSString * _screenSize;
+    NSString * _machineName;
+    BOOL _compromized;
 }
 
 @property (nonatomic, retain) NSURL * serviceURL;
@@ -42,6 +72,50 @@
     return _sharedObject;
 }
 
+- (NSString *)machineName
+{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    return [NSString stringWithCString:systemInfo.machine encoding:NSUTF8StringEncoding];
+}
+
+
+- (BOOL)isCompromized
+{
+    const struct mach_header *header;
+    Dl_info dlinfo;
+    
+    /* Fetch the dlinfo for main() */
+    if (dladdr(main, &dlinfo) == 0 || dlinfo.dli_fbase == NULL) {
+        NSLog(@"Could not find main() symbol (very odd)");
+        return NO;
+    }
+    header = dlinfo.dli_fbase;
+    
+    /* Compute the image size and search for a UUID */
+    struct load_command *cmd = (struct load_command *) (header+1);
+    
+    for (uint32_t i = 0; cmd != NULL && i < header->ncmds; i++) {
+        /* Encryption info segment */
+        if (cmd->cmd == LC_ENCRYPTION_INFO) {
+            struct encryption_info_command *crypt_cmd = (struct encryption_info_command *) cmd;
+            /* Check if binary encryption is enabled */
+            if (crypt_cmd->cryptid < 1) {
+                /* Disabled, probably pirated */
+                return NO;
+            }
+            
+            /* Probably not pirated? */
+            return YES;
+        }
+        
+        cmd = (struct load_command *) ((uint8_t *) cmd + cmd->cmdsize);
+    }
+    
+    /* Encryption info not found */
+    return NO;
+}
+
 /**
  * Code taken from http://oleb.net/blog/2011/09/how-to-replace-the-udid/
  */
@@ -54,6 +128,12 @@
         CFRelease(uuid);
     }
     return uuidString;
+}
+
+- (NSString *)reachabilityStatus
+{
+    Reachability * reachability = [Reachability reachabilityForInternetConnection];
+    return reachability.isReachableViaWiFi ? @"WiFi" : (reachability.isReachableViaWWAN ? @"WWAN" : @"NO");
 }
 
 - (id)init
@@ -87,6 +167,12 @@
         // Screen size
         CGSize screenSize = [UIScreen mainScreen].bounds.size;
         _screenSize = [NSString stringWithFormat:@"%.0f x %.0f x %.1f", screenSize.width, screenSize.height, [UIScreen mainScreen].scale];
+        
+        // Machine name
+        _machineName = [self machineName];
+        
+        // Compromized
+        _compromized = [self isCompromized];
     }
     return self;
 }
@@ -104,6 +190,10 @@
     [request setValue:_system forHTTPHeaderField:MCSTATSSENDER_SYSTEM_KEY];
     [request setValue:_device forHTTPHeaderField:MCSTATSSENDER_DEVICE_KEY];
     [request setValue:_screenSize forHTTPHeaderField:MCSTATSSENDER_SCREEN_SIZE_KEY];
+    
+    [request setValue:_machineName forHTTPHeaderField:MCSTATSSENDER_MACHINE_NAME_KEY];
+    [request setValue:(_compromized ? @"YES" : @"NO") forHTTPHeaderField:MCSTATSSENDER_COMPROMIZED_KEY];
+    [request setValue:[self reachabilityStatus] forHTTPHeaderField:MCSTATSSENDER_REACHABILITY_KEY];
     
     NSData * actionData = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
     [request setHTTPBody:actionData];

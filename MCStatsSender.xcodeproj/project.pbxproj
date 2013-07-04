@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		860F5D6317853C4900B90D41 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 860F5D6217853C4900B90D41 /* Reachability.m */; };
 		8692F07D16394857002B968F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8692F07C16394857002B968F /* UIKit.framework */; };
 		8692F07F16394857002B968F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8692F07E16394857002B968F /* Foundation.framework */; };
 		8692F08116394857002B968F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8692F08016394857002B968F /* CoreGraphics.framework */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		860F5D6117853C4900B90D41 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Reachability/Reachability.h; sourceTree = "<group>"; };
+		860F5D6217853C4900B90D41 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Reachability/Reachability.m; sourceTree = "<group>"; };
 		8692F07816394857002B968F /* MCStatsSender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MCStatsSender.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8692F07C16394857002B968F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8692F07E16394857002B968F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,10 +63,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		860F5D5F17853C2900B90D41 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				860F5D6017853C3600B90D41 /* Reachability */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
+		860F5D6017853C3600B90D41 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				860F5D6117853C4900B90D41 /* Reachability.h */,
+				860F5D6217853C4900B90D41 /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		8692F06D16394856002B968F = {
 			isa = PBXGroup;
 			children = (
 				8692F0AD16399371002B968F /* README.md */,
+				860F5D5F17853C2900B90D41 /* External */,
 				86B701AA163A58AF00D5269B /* PHP */,
 				8692F09F16394860002B968F /* Classes */,
 				8692F08216394857002B968F /* MCStatsSender */,
@@ -206,6 +227,7 @@
 				8692F08D16394857002B968F /* AppDelegate.m in Sources */,
 				8692F09616394857002B968F /* ViewController.m in Sources */,
 				8692F0A21639487D002B968F /* MCStatsSender.m in Sources */,
+				860F5D6317853C4900B90D41 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
